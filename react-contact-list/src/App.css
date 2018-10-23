@@ -1,0 +1,86 @@
+.App {
+  margin: 10px auto 10px auto;
+  max-width: 900px;
+  min-height: 90vh;
+  background: #EEEEEE;
+  position: relative;
+  padding-bottom: 2em;
+}
+
+.App-book {
+  margin: 20px;
+  overflow: auto;
+  clear: both;
+  background: #ffffff;
+}
+
+.App-list { 
+  float: left;
+  width: 40%;
+}
+
+.App-content {
+  margin: 0;
+  padding: 1em;
+  background: #fff;
+}
+
+.App-details {
+  float: left;
+  width: 60%;
+}
+
+.App-contact {
+  background: #EEE;
+  padding: 5px;
+  margin: 5px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.App-contact:hover {
+  background: #d59450;
+}
+
+.App-contact-avatar {
+  display: inline-block;
+  width: 96px;
+  height: 96px;
+  font-size: 5em;
+  line-height: 96px;
+  vertical-align: middle;
+  text-align: center;
+  background: #838383;
+  color: #ffffff;
+}
+
+.App-contact-title { 
+  display: inline-block;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.App-contact-name {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 5px 20px;
+}
+
+.App-contact-info-line {
+  margin: 5px;
+}
+
+.App-contact-info {
+  overflow: auto;
+  padding: 5px;
+}
+
+.App-contact-info span {
+   display: block;
+}
+
+
+.App-link {
+  color: #61dafb;
+}
+
