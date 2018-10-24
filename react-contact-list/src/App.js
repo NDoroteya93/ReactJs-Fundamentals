@@ -1,14 +1,27 @@
 import React, { Component } from 'react';
 import './App.css';
-import PropTypes from 'prop-types';
+import ContactList from './components/ContactList';
+import contacts from './api/contacts.json';
 
-/**
-* @augments {Component<{  data:shape({    firstName:string,    lastName:string,    phone:string,    email: Proptypes.string  >}
-*/
 class App extends Component {
+
+  constructor(props) { 
+    super(props);
+
+    this.state = { 
+      activeContact: contacts[0]
+    }
+  }
+
+  showContactInfo = (contact) => {
+    if (contact) {
+      this.setState({ activeContact: contact });
+    }
+  }
+
   render() {
 
-    const data = this.props.data;
+    const activeContact = this.state.activeContact;
 
     return (
       <div className="App">
@@ -17,7 +30,7 @@ class App extends Component {
           <div className="App-list">
             <h1>Contacts</h1>
             <div className="App-content">
-              {MakeContactList(data)}
+              <ContactList data={contacts} isActive={activeContact.email} onToggle={this.showContactInfo}/>
             </div>
           </div>
           <div className="App-details">
@@ -28,13 +41,13 @@ class App extends Component {
                       <span className="App-contact-avatar">&#9787;</span>
                   </div>
                   <div className="col">
-                      <span className="App-contact-name">Ivan</span>
-                      <span className="App-contact-name">Ivanov</span>
+                      <span className="App-contact-name">{ activeContact.firstName }</span>
+                      <span className="App-contact-name">{ activeContact.lastName }</span>
                   </div>
               </div>
               <div className="App-contact-info">
-                  <span className="App-contact-info-line">&phone; 0887 123 456</span>
-                  <span className="App-contact-info-line">&#9993; i.ivanov@gmail.com</span>
+                  <span className="App-contact-info-line">&#9742; { activeContact.phone }</span>
+                  <span className="App-contact-info-line">&#9993; { activeContact.email }</span>
               </div>
             </div>
         </div>
@@ -44,25 +57,5 @@ class App extends Component {
     );
   }
 }
-
-const MakeContactList = data => (
-  data.map((contact) => {
-    return (
-      <div className="App-contact" data-id="id"  key={contact.email}>
-        <span className="App-contact-avatar small">&#9787;</span>
-        <span className="App-contact-title">{contact.firstName} {contact.lastName}</span>
-    </div>
-    );
-  })
-);
-
-App.propTypes = {
-  data: PropTypes.shape({
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    phone: PropTypes.string,
-    email: PropTypes.string
-  })
-};
 
 export default App;

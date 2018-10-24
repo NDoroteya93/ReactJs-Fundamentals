@@ -30,36 +30,6 @@
   width: 60%;
 }
 
-.App-contact {
-  background: #EEE;
-  padding: 5px;
-  margin: 5px;
-  vertical-align: middle;
-  cursor: pointer;
-}
-
-.App-contact:hover {
-  background: #d59450;
-}
-
-.App-contact-avatar {
-  display: inline-block;
-  width: 96px;
-  height: 96px;
-  font-size: 5em;
-  line-height: 96px;
-  vertical-align: middle;
-  text-align: center;
-  background: #838383;
-  color: #ffffff;
-}
-
-.App-contact-title { 
-  display: inline-block;
-  padding: 5px;
-  font-weight: bold;
-}
-
 .App-contact-name {
   font-size: 2em;
   font-weight: bold;
