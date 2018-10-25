@@ -1,0 +1,53 @@
+.Slider { 
+  position: relative;
+}
+
+.Slider-content { 
+  position: relative;
+  display: block;
+}
+
+img { 
+  width: 100%;
+}
+
+.Slider-btn { 
+  position: absolute;
+  top: 50%;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: none;
+  display: inline-block;
+  padding: 8px 16px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background-color: inherit;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  color: #fff;
+  background-color: #000;
+}
+
+.Slider-btn:hover { 
+  color: #000;
+  background-color: #ccc
+}
+
+.Slider-btn-left { 
+  left: 0%;
+  transform: translate(0%,-50%);
+  -ms-transform: translate(-0%,-50%);
+}
+
+.Slider-btn-right { 
+  right: 0%;
+  transform: translate(0%,-50%);
+  -ms-transform: translate(0%,-50%);
+}
