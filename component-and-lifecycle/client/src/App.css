@@ -4,6 +4,25 @@
   margin-right: auto;
 }
 
+.App-cards-slider { 
+  position: relative;
+  max-width: 228px;
+  margin: 0 auto;
+}
+.App-cards-slider-wrapper { 
+  display: flex;
+}
+
+.App-cards-slider::after { 
+  content: ''; 
+  display: block; 
+  width: 100%; 
+  height: 264px;
+  outline: 5px solid #61DAFE;
+  position: absolute;
+  top: 0; 
+  left: 0;
+}
 
 @keyframes App-logo-spin {
   from {

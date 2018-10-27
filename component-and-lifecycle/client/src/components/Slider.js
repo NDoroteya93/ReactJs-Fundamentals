@@ -1,21 +1,35 @@
 import React, { Component } from 'react';
 import './Slider.css';
 import PropTypes from 'prop-types';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 class Slider extends Component {
 
   render() {
-    const { episode, prev, next } = this.props;
+    const { episode, prev, next, roster } = this.props;
     return (
       <div className="Slider">
         <div className="Slider-content"> 
-          { episode && 
-            <img src={episode.url} alt="" />
+          { episode &&
+            <LazyLoadImage
+              alt=""
+              src={episode.url}
+              width={400} />
           }
         </div>
         {/* ACTION BUTTONS */}
-        <button className="Slider-btn Slider-btn-left" onClick={ () => prev() }>&lt;</button>
-        <button className="Slider-btn Slider-btn-right" onClick={ () => next() }>&gt;</button>
+        { episode &&
+          <button className="Slider-btn Slider-btn-left" 
+            onClick={ () => prev() }
+            disabled={episode.id === 0}
+          >&lt;</button>
+        }
+        { episode && roster && roster.length > 0 &&
+          <button className="Slider-btn Slider-btn-right" 
+            onClick={ () => next() }
+            disabled={episode.id === roster.length - 2}
+            >&gt;</button>
+        }
       </div>
     );
   }
@@ -26,7 +40,7 @@ Slider.propTypes = {
   episode: PropTypes.shape({
     id: PropTypes.number, 
     url: PropTypes.string
-  }).isRequired, 
+  }), 
   roster: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string, 

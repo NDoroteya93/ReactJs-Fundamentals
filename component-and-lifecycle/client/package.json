@@ -6,6 +6,8 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
+    "react-lazy-load-image-component": "^1.1.5",
+    "react-lazyload": "^2.3.0",
     "react-scripts": "2.0.5"
   },
   "scripts": {

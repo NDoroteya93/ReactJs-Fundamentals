@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Slider from './components/Slider';
+import Card from './components/Card';
 
 const API = 'http://localhost:9999/';
 const ROSTER_QUERY = 'roster';
@@ -13,10 +14,8 @@ class App extends Component {
     
     this.state = { 
       isLoading: false, 
-      episode: {
-        id:0,
-        url:"https://i.imgur.com/B31Uwkm.png"
-    }
+      episode: null, 
+      roster: []
     }
   }
 
@@ -54,22 +53,36 @@ class App extends Component {
   }
 
   nextSlide = async () => { 
-    const index = this.state.episode.id + 1; 
-    const episode = await this.getEpisode(index);
-    this.setState({ episode })
+    const { episode, roster } = this.state;
+    const index = (episode.id + 1 > roster) ? episode.id : episode.id + 1; 
+    const response = await this.getEpisode(index);
+
+    this.setState({ episode: response })
   }
 
   prevSlide = async () => { 
-    const index = (this.state.episode.id - 1 < 0) ? 0 : this.state.episode - 1; 
-    const episode = await this.getEpisode(index);
-    this.setState({ episode })
+    const { episode } = this.state;
+    const index = (episode.id - 1 < 0) ? 0 : episode.id - 1; 
+    const response = await this.getEpisode(index);
+
+    this.setState({ episode: response })
   }
 
   render() {
+    const { roster } = this.state;
     return (
       <div className="App">
         <div className="App-content"> 
           <Slider { ...this.state } prev={this.prevSlide} next={this.nextSlide}/>
+        </div>
+        <div className="App-content">
+          <div className="App-cards-slider">
+            <div className="App-cards-slider-wrapper">
+              { roster && roster.length > 0 &&
+                roster.map((episode) => <Card key={episode.id} {...episode}/>)
+              }
+            </div>
+          </div>
         </div>
       </div>
     );
