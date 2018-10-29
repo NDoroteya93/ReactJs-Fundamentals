@@ -1,0 +1,70 @@
+.Card { 
+  flex: 1;
+  min-width: 200px;
+  opacity: 0.7;
+  transform: scale(0.8);
+  transition: opacity 300ms linear, border-color 300ms linear, background-color 300ms linear, transform 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  border: 3px #f3f3f3 solid;
+  box-shadow: none;
+  transition: all 0.3s linear;
+  cursor: pointer;
+  background-color: white;
+  padding: 10px;
+  max-width: 220px;
+  text-align: left;
+  margin: 0 auto; 
+}
+
+.Card:hover {
+  background-color: #f3f3f3;
+  border-color: #f3f3f3; 
+}
+
+.Card.Card-details {
+  opacity: 1 !important;
+  max-width: 50%;
+}
+
+.Card img { 
+  max-width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+.Card-descipription { 
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.active-slide-0 #Card-0 {
+  opacity: 1;
+  transform: scale(1);
+  background-color: #f3f3f3;
+  border-color: #f3f3f3; 
+}
+
+.active-slide-1 #Card-1 {
+  opacity: 1;
+  transform: scale(1);
+  background-color: #f3f3f3;
+  border-color: #f3f3f3; 
+}
+
+.active-slide-2 #Card-2 {
+  opacity: 1;
+  transform: scale(1);
+  background-color: #f3f3f3;
+  border-color: #f3f3f3; 
+}
+
+.active-slide-3 #Card-3 {
+  opacity: 1;
+  transform: scale(1);
+  background-color: #f3f3f3;
+  border-color: #f3f3f3;
+}
+
