@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Slider from './components/Slider';
 import Card from './components/Card';
+import CardDetails from './components/Card-details';
 
 const API = 'http://localhost:9999/';
 const ROSTER_QUERY = 'roster';
@@ -15,7 +16,8 @@ class App extends Component {
     this.state = { 
       isLoading: false, 
       episode: null, 
-      roster: []
+      roster: [], 
+      index: 0
     }
   }
 
@@ -57,7 +59,7 @@ class App extends Component {
     const index = (episode.id + 1 > roster) ? episode.id : episode.id + 1; 
     const response = await this.getEpisode(index);
 
-    this.setState({ episode: response })
+    this.setState({ episode: response, index })
   }
 
   prevSlide = async () => { 
@@ -65,24 +67,31 @@ class App extends Component {
     const index = (episode.id - 1 < 0) ? 0 : episode.id - 1; 
     const response = await this.getEpisode(index);
 
-    this.setState({ episode: response })
+    this.setState({ episode: response, index })
   }
 
   render() {
-    const { roster } = this.state;
+    const { roster, index } = this.state;
     return (
       <div className="App">
         <div className="App-content"> 
           <Slider { ...this.state } prev={this.prevSlide} next={this.nextSlide}/>
         </div>
-        <div className="App-content">
-          <div className="App-cards-slider">
-            <div className="App-cards-slider-wrapper">
+        <div className="App-content-slider">
+          <div className={`App-cards-slider active-slide-${index}`}>
+            <div className="App-cards-slider-wrapper" style={{
+                  'transform': `translateX(-${index*(100/roster.length)}%)`
+                }}>
               { roster && roster.length > 0 &&
                 roster.map((episode) => <Card key={episode.id} {...episode}/>)
               }
             </div>
           </div>
+        </div>
+        <div className="App-content">
+          { roster && roster[index] &&
+            <CardDetails {...roster[index]} />
+          }
         </div>
       </div>
     );
