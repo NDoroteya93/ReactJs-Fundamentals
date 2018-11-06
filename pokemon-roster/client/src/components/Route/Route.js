@@ -1,39 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './Route.css';
 
-// Renders some UI when the URL matches a location 
-// you specify in the Route's path prop.
+const instances = [];
 
-export default class Route extends Component { 
-
-  static propTypes = { 
-    exact: PropTypes.bool, 
-    path: PropTypes.string, 
-    component: PropTypes.func, 
-    render: PropTypes.func
+ const historyPush = (path) => {
+    window.history.pushState({}, null, path);
+    instances.forEach(instance => instance.forceUpdate())
   }
 
-  // popstate, which will be fired whenever the user
-  // clicks on the forward or back button
-  componentWillMount() { 
-    addEventListener('popstate', this.handlePop);
+  // replace the current entry in the history stack
+  // instead of adding a new one 
+  const historyReplace = (path) => {
+    window.history.replaceState({}, null, path);
+    instances.forEach(instance => instance.forceUpdate())
   }
 
-  componentWillUnmount() { 
-    removeEventListener('popstate', this.handlePop);
-  }
 
-  handlePop = () => {
+// keep track of which <Route>s have been rendered
+// by pushing their instances to an array, then whenever a location change occurs
+const register = (comp) => instances.push(comp);
+const unregister = (comp) => instances.splice(instances.indexOf(comp));
 
-    // kick of a re-render
-     this.forceUpdate();
-  }
 
   // pivotal function to our router, 
   // because this function which is going 
   // to be decide if a current URL matches 
   // the Path 
-  matchPath = (pathname, options) => { 
+  const matchPath = (pathname, options) => { 
     const { exact = false, path } = options;
 
     if (!path) { 
@@ -71,11 +65,49 @@ export default class Route extends Component {
     }
   }
   
+
+// Renders some UI when the URL matches a location 
+// you specify in the Route's path prop.
+
+class Route extends Component { 
+
+  // constructor(props) { 
+  //   super(props);
+
+  //   this.state.instances = [];
+  // }
+
+  static propTypes = { 
+    exact: PropTypes.bool, 
+    path: PropTypes.string, 
+    component: PropTypes.func, 
+    render: PropTypes.func
+  }
+
+  // popstate, which will be fired whenever the user
+  // clicks on the forward or back button
+  componentWillMount() { 
+    register(this);
+    window.addEventListener('popstate', this.handlePop);
+  }
+
+  componentWillUnmount() { 
+    unregister(this);
+    window.removeEventListener('popstate', this.handlePop);
+  }
+
+  // Routes that are rendering the UI based off the current URL, it makes sense to also 
+  // to give Routes the ability to listen for and re-render whenever popstate event occurs
+  handlePop = () => {
+    // kick of a re-render
+     this.forceUpdate();
+  }
+
   render() { 
     const { path, exact, component, render } = this.props;
 
-    const match = this.matchPath(
-      location.pathname, // gloval DOM variable 
+    const match = matchPath(
+      window.location.pathname, // gloval DOM variable 
       { path, exact }
     ); 
 
@@ -105,3 +137,58 @@ export default class Route extends Component {
     return null;
   }
 }
+
+class Link extends Component {
+
+  static propTypes = { 
+    to: PropTypes.string.isRequired, 
+    replace: PropTypes.bool
+  }
+
+
+  handleClick = (event) => { 
+    // to - is a string and is the location to link to
+    // replace is a boolean 
+    const { replace, to } = this.props;
+
+    event.preventDefault();
+    
+    replace ? historyReplace(to) : historyPush(to);
+  }
+
+  // return an anchor tag 
+  render() { 
+    const { to, children } = this.props;
+    return (
+      <a href={to} onClick={this.handleClick} className="Navbar-nav-link">
+        {children}
+      </a>
+    )
+  }
+}
+
+
+// rendering any UI, 
+class Redirect extends Component { 
+
+  static defaultProps = { 
+    push: false
+  }
+
+  static propTypes = { 
+    to: PropTypes.string.isRequired, 
+    push: PropTypes.bool.isRequired
+  }
+
+  componentDidMount() {
+    const { to, push } = this.props;
+
+    push ? historyPush(to) : historyReplace(to);
+  }
+
+  render() { 
+    return null;
+  }
+}
+
+export { Link, Route, Redirect }

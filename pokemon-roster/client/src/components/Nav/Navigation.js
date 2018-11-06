@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './Navigation.css';
+import { Link } from '../Route/Route';
 
+// The Navigation creates links that can be used to navigate
+// between routes
 export default class Navigation extends Component { 
   render() { 
     return ( 
@@ -9,10 +12,12 @@ export default class Navigation extends Component {
         <div className="Navbar-collapse">
           <ul className="Navbar-nav">
             <li className="Navbar-nav-item">
-              <a className="Navbar-nav-link">Signup</a>
+              <Link to='/sign-up'>Signup</Link>
+              {/* <a href="#" className="Navbar-nav-link">Signup</a> */}
             </li>
             <li className="Navbar-nav-item">
-              <a className="Navbar-nav-link">Login</a>
+              <Link to='/login'>Login</Link>
+              {/* <a href="#" className="Navbar-nav-link">Login</a> */}
             </li>
           </ul>
         </div>

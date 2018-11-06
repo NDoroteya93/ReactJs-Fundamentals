@@ -1,0 +1,14 @@
+
+.Navbar-nav-link { 
+  display: block;
+  padding: .5rem 1rem;
+  color: rgba(255,255,255,.5);
+  padding-right: .5rem;
+  padding-left: .5rem
+}
+
+.Navbar-nav-link:hover { 
+  color: rgba(255,255,255,.75);
+  text-decoration: none;
+  cursor: pointer;
+}
