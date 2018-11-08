@@ -7,7 +7,9 @@ const router = new express.Router()
 function validateSignupForm (payload) {
   const errors = {}
   let isFormValid = true
-  let message = ''
+  let message = ''; 
+
+  console.log(payload);
 
   if (!payload || typeof payload.email !== 'string' || !validator.isEmail(payload.email)) {
     isFormValid = false
@@ -62,8 +64,7 @@ function validateLoginForm (payload) {
 }
 
 router.post('/signup', (req, res, next) => {
-  console.log(req.body)
-  
+  console.log('body', req.body);
 
   const validationResult = validateSignupForm(req.body)
   if (!validationResult.success) {

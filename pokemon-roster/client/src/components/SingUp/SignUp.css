@@ -1,20 +1,16 @@
-.SignUp form { 
-  max-width: 530px;
-  padding: 15px;
-  margin: 0 auto;
-  border-radius: 0.3em;
-  background-color: #f2f2f2;
+.Button { 
+  color: #fff;
+  background-color: #428bca;
+  border-color: #357ebd;
 }
 
-.SignUp form h2 { 
-  font-family: 'Open Sans' , sans-serif;
-  font-size: 40px;
-  font-weight: 600;
-  color: #000000;
-  margin-top: 5%;
+.error-message { 
+  color: #a94442;
+  padding: .75rem 1.25rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 8rem;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 4px;
+  border: 1px solid transparent;
+  border-radius: .25rem;
 }
-
-.SignUp form .form-group { }
