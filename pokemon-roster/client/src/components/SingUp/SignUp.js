@@ -44,16 +44,19 @@ export default class SignUp extends Component {
     });
   }
 
-  handleChange(event) { 
-    event.preventDefault();
-
+  handleChange(event) {
+    const { form } = this.state;
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    const errors = Validation({...this.state.form});
-    const { form } = this.state;
+
+    // TODO, Change with data message 
+    // const errors = Validation({...this.state.form});
+    const errors = {};
+
 
     if (name === 'confirmEmail' && form.confirmEmail !== form.email) {
+      
       this.setState({errors: { email: true, confirmEmail: true }});
     }
 
@@ -77,8 +80,6 @@ export default class SignUp extends Component {
    const { form } = this.state;
    const { email, password, name } = form 
 
-   
-
     const response = await fetch(API + CREATE_USER_QUERY, {
      method: 'POST', 
      body: JSON.stringify({email, name, password}),
@@ -100,6 +101,15 @@ export default class SignUp extends Component {
     }
   }
 
+  setFormValue(input) { 
+    const { form } = this.state;
+
+    this.setState(
+      form: {
+        ...form,
+        input
+    });
+  }
   // validate inputs every time
   // the form is re-rendered
   render() { 
@@ -215,7 +225,7 @@ export default class SignUp extends Component {
                 <label className="checkbox-inline">
                   <input 
                     type="checkbox" 
-                    defaultChecked={this.state.form.agree}
+                    checked={this.state.form.agree}
                     name="agree"
                     onBlur={(e) => this.handleBlur(e)}
                     onChange={(e) => this.handleChange(e)} />I Agree
