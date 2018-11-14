@@ -22,7 +22,7 @@ code {
 
 /* FORM */
 form { 
-  max-width: 530px;
+  max-width: 550px;
   padding: 15px;
   margin: 0 auto;
   border-radius: 0.3em;
@@ -30,7 +30,7 @@ form {
 }
 
 form h2 { 
-  font-family: 'Open Sans' , sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 40px;
   font-weight: 600;
   color: #000000;
@@ -41,8 +41,6 @@ form h2 {
 }
 
 .form-group { 
-  margin-right: -15px;
-  margin-left: -15px;
   margin-bottom: 15px;
 }
 

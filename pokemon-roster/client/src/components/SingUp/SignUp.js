@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './SignUp.css';
-import { Validation } from '../../utils/Validation';
 import { Redirect } from '../Route/Route';
+import { registerForm } from '../../constants/registerForm';
+import Input from '../Input/Input';
 
 const API = 'http://localhost:5000/';
 const CREATE_USER_QUERY = 'auth/signup';
@@ -24,14 +25,16 @@ export default class SignUp extends Component {
         ...DEFAULT_FORM_VALUES,
        },
        touched: {},
-       errors: {},
        data: null
      }
   }
 
-  componentDidMount() { 
-    const errors = Validation({...this.state.form});
-    this.setState({ errors });
+  componentDidMount () {
+   this._mounted = true
+  }
+
+  componentWillUnmount () {
+    this._mounted = false
   }
 
   handleBlur(event) { 
@@ -45,23 +48,23 @@ export default class SignUp extends Component {
   }
 
   handleChange(event) {
-    const { form } = this.state;
+    const { form, data } = this.state;
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
-    // TODO, Change with data message 
-    // const errors = Validation({...this.state.form});
-    const errors = {};
+    let errors = {};
 
-
-    if (name === 'confirmEmail' && form.confirmEmail !== form.email) {
-      
-      this.setState({errors: { email: true, confirmEmail: true }});
+    if (name === 'confirmEmail') {
+      value !== form.email
+        ? errors = { confirmEmail: 'Email need to match' }
+        : errors = { confirmEmail: null };
     }
 
-    if (name === 'confirmPassword' && form.password !== form.confirmPassword) {
-      this.setState({errors: { password: true, confirmPassword: true }});
+    if (name === 'confirmPassword') {
+        value !== form.password
+          ? errors = { confirmPassword: 'Password need to match' }
+          : errors = { confirmPassword: null };
     }
 
     this.setState({ 
@@ -69,12 +72,16 @@ export default class SignUp extends Component {
         ...form,
         [name]: value
       }, 
-      errors
+      data: {
+        ...data, 
+        errors: {
+          ...errors
+        }
+      }
     });
   }
 
  async handleSubmit(event) {
-
    event.preventDefault();
 
    const { form } = this.state;
@@ -91,7 +98,7 @@ export default class SignUp extends Component {
     const message = await response.json();
     this.setState({ data: message });
 
-    if (message.success) {
+    if (message.success && this._mounted) {
         this.setState(
           { form:
            {
@@ -101,27 +108,17 @@ export default class SignUp extends Component {
     }
   }
 
-  setFormValue(input) { 
-    const { form } = this.state;
-
-    this.setState(
-      form: {
-        ...form,
-        input
-    });
-  }
-  // validate inputs every time
-  // the form is re-rendered
-  render() { 
-    const {touched, data } = this.state; 
-
-    const shouldMarkError = (field) => {
-      const hasError = (data && data.errors && data.errors[field]) ? data.errors[field] : false;
-      const shouldShow = touched[field];
-
-      return hasError && shouldShow ? true : false;
-    };
+  shouldMarkError(field) {
+    const { data, touched } = this.state;
     
+    const hasError = (data && data.errors && data.errors[field]) ? data.errors[field] : false;
+    const shouldShow = touched[field];
+
+    return hasError && shouldShow ? true : false;
+  };
+
+  render() { 
+    const { data } = this.state; 
 
     // redirect after successfull registration
     if (data && data.success) {
@@ -133,110 +130,36 @@ export default class SignUp extends Component {
             <h2>Sign Up</h2>
              {
                 data && data.message &&
-                <h4 className="error-message">{data.message}</h4>
+                <h4 className="Signup-error-message">{data.message}</h4>
              }
-              <div className="form-group">
-                <label htmlFor="email" className="control-label">Email</label>
-                <div className="control-input">
-                  <input 
-                    type="text" 
-                    id="email" 
-                    placeholder="Email" 
-                    className={shouldMarkError('email') ? 'form-control error': 'form-control'}  
-                    value={this.state.form.email}
-                    name="email"
-                    onBlur={(e) => this.handleBlur(e)}
-                    onChange={(e) => this.handleChange(e)} />
-                </div>
-                  {
-                  shouldMarkError('password') && data && data.errors && data.errors.email &&
-                  <div className="error-message">{ data.errors.email }</div>
-                  }
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="confirm-email" className="control-label">Confirm Email</label>
-                  <div className="control-input">
-                    <input 
-                      type="text" 
-                      id="confirm-email" 
-                      placeholder="Confirm Email" 
-                      name="confirmEmail" 
-                      value={this.state.form.confirmEmail} 
-                      className={shouldMarkError('confirmEmail') ? 'form-control error': 'form-control'} 
-                      onBlur={(e) => this.handleBlur(e)}
-                      onChange={(e) => this.handleChange(e)} />
-                  </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="name" className="control-label">User Name</label>
-                  <div className="control-input">
-                    <input 
-                      type="text" 
-                      id="name" 
-                      placeholder="User Name" 
-                      className={shouldMarkError('name') ? 'form-control error': 'form-control'} 
-                      value={this.state.form.name} 
-                      name="name"
-                      onBlur={(e) => this.handleBlur(e)}
-                      onChange={(e) => this.handleChange(e)} />
-                  </div>
-                  {
-                  shouldMarkError('password') && data && data.errors && data.errors.name &&
-                  <div className="error-message">{ data.errors.name }</div>
-                  }
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password" className="control-label">Password</label>
-                <div className="control-input">
-                  <input 
-                    type="password"
-                    id="password"
-                    className={shouldMarkError('password') ? 'form-control error': 'form-control'} 
-                    value={this.state.form.password} 
-                    name="password"
-                    onBlur={(e) => this.handleBlur(e)}
-                    onChange={(e) => this.handleChange(e)} />
-                </div>
-                
+              <div>
                 {
-                  shouldMarkError('password') && data && data.errors && data.errors.password &&
-                  <div className="error-message">{ data.errors.password }</div>
-                  }
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="confirm-password" className="control-label">Confirm Password</label>
-                  <div className="control-input">
-                    <input 
-                      type="password" 
-                      id="confirm-password"
-                      value={this.state.form.confirmPassword} 
-                      className={shouldMarkError('confirmPassword') ? 'form-control error': 'form-control'} 
-                      name="confirmPassword"
-                      onBlur={(e) => this.handleBlur(e)}
-                      onChange={(e) => this.handleChange(e)} />
-                  </div>
-              </div>
-
-              <div className="form-group">
-                <label className="checkbox-inline">
-                  <input 
-                    type="checkbox" 
-                    checked={this.state.form.agree}
-                    name="agree"
-                    onBlur={(e) => this.handleBlur(e)}
-                    onChange={(e) => this.handleChange(e)} />I Agree
-                </label>
+                  registerForm.map((formValue, i) => { 
+                    return ( 
+                      <Input
+                        key={`${formValue.name}-${i}`}
+                        id={`${formValue.name}-${i}`}
+                        label={formValue.label}
+                        placeholder={formValue.placeholder}
+                        name={formValue.name}
+                        type={formValue.type}
+                        errorMessage={data && data.errors[formValue.name]}
+                        value={this.state.form[formValue.name]}
+                        onBlur={(e) => this.handleBlur(e)}
+                        onChange={(e) => this.handleChange(e)}
+                        shouldMarkError={() => this.shouldMarkError(formValue.name)}
+                      />
+                    )
+                  })
+                }
               </div>
 
               <button 
                 className="Button"
                 type="submit"
                 onClick={(e) => this.handleSubmit(e)}
-              >Register</button>
+              >Register
+              </button>
           </form>
         </div>
       )
