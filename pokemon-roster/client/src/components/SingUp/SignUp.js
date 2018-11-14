@@ -80,17 +80,16 @@ export default class SignUp extends Component {
       }
     });
   }
+  async handleSubmit(event) {
+    event.preventDefault();
 
- async handleSubmit(event) {
-   event.preventDefault();
-
-   const { form } = this.state;
-   const { email, password, name } = form 
+    const { form } = this.state;
+    const { email, password, name } = form 
 
     const response = await fetch(API + CREATE_USER_QUERY, {
-     method: 'POST', 
-     body: JSON.stringify({email, name, password}),
-     headers: {
+      method: 'POST', 
+      body: JSON.stringify({email, name, password}),
+      headers: {
         "Content-Type": "application/json; charset=utf-8"
       },
     }); 
@@ -99,12 +98,13 @@ export default class SignUp extends Component {
     this.setState({ data: message });
 
     if (message.success && this._mounted) {
-        this.setState(
-          { form:
-           {
-            ...DEFAULT_FORM_VALUES
-            }
-          });
+      this.setState(
+        { form:
+          {
+          ...DEFAULT_FORM_VALUES
+          }
+        }
+      );
     }
   }
 

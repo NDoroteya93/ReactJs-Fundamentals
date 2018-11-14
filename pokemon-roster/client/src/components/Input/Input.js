@@ -98,5 +98,7 @@ Input.defaultProps = {
   errorMessage: null, 
   error: false, 
   type: 'text', 
-  value: ''
+  value: '', 
+  onBlur: () => {},
+  shouldMarkError: () => {}
 };
