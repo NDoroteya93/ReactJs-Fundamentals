@@ -8,7 +8,7 @@
     "react-dom": "^16.6.0",
     "react-lazy-load-image-component": "^1.1.5",
     "react-lazyload": "^2.3.0",
-    "react-scripts": "2.0.5"
+    "react-scripts": "4.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
